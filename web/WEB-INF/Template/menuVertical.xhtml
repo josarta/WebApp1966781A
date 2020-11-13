@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:body>
+       <ui:composition>
+            <nav class="navbar navbar-expand-sm navbar-default">
+                <div id="main-menu" class="main-menu collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="index.xhtml"><i class="menu-icon fa fa-laptop"></i>${panel}</a>
+                        </li>
+                        <li class="menu-title">Mis modulos</li><!-- /.menu-title -->
+                        
+                         <li class="menu-item-has-children dropdown">
+                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                                 <i class="menu-icon fa fa-user-circle"></i>Mi perfil</a>
+                            <ul class="sub-menu children dropdown-menu">
+                                <li><i class="fa fa-table"></i><a href="../miperfil/index.xhtml">Ver mis datos</a></li>
+                            </ul>
+                        </li>
+                        
+                        
+                        <c:forEach items="#{usuarioSession.usuLogin.rolCollection}" var="rol">
+                        
+                         <li class="menu-item-has-children dropdown">
+                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon #{rol.icono}"></i>#{rol.nombre}</a>
+                            <ul class="sub-menu children dropdown-menu">
+                                <li><i class="fa fa-table"></i><a href="#{rol.ruta}">#{rol.descripcion}</a></li>
+                            </ul>
+                        </li>
+                            
+                        </c:forEach>
+                       
+
+
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>   
+            
+        </ui:composition>
+    </h:body>
+</html>
+

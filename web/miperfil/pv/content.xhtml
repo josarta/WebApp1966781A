@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:body>
+        <ui:composition>
+
+            <div class="breadcrumbs">
+                <div class="breadcrumbs-inner">
+                    <div class="row m-0">
+                        <div class="col-sm-4">
+                            <div class="page-header float-left">
+                                <div class="page-title">
+                                    <h1>${panel}</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="page-header float-right">
+                                <div class="page-title">
+                                    <ol class="breadcrumb text-right">
+                                        <li><a href="#">Inicio sesion</a></li>
+                                        <li class="active"><a href="#">${panel}</a></li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="animated fadeIn">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">Actualizar</strong>
+                            </div>
+                            <div class="card-body">
+                                <!-- Credit Card -->
+                                <div id="pay-invoice">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h3 class="text-center">Mis datos</h3>
+                                        </div>
+                                        <hr/>
+                                        <h:form >
+                                            <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Tipo de documento</label>
+                                                <input id="cc-payment" disabled="true" name="cc-payment" type="text" class="form-control" aria-required="true" aria-invalid="false" value="#{usuarioSession.usuLogin.tipoDocumento}"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cc-docu" class="control-label mb-1">Numero documento</label>
+                                                <input id="cc-docu" disabled="true" name="cc-docu" type="text" class="form-control" aria-required="true" aria-invalid="false" value="#{usuarioSession.usuLogin.documento}"/>
+                                            </div>
+
+
+                                            <div class="form-group has-success">
+                                                <label for="cc-name" class="control-label mb-1">Nombres</label>
+                                                <h:inputText required="true" requiredMessage="Ingrese sus nombres" id="regNombres" value="#{usuarioSession.usuLogin.nombres}" class="form-control" html5:placeholder="Nombres"/>
+                                                <h:message style="color: red" for="regNombres"></h:message>
+                                            </div>
+
+                                            <div class="form-group has-success">
+                                                <label for="cc-name" class="control-label mb-1">Apellidos</label>
+                                                <h:inputText required="true" requiredMessage="Ingrese sus apellidos" id="regApellidos" value="#{usuarioSession.usuLogin.apellidos}" class="form-control" html5:placeholder="Apellidos"/>
+                                                <h:message style="color: red" for="regApellidos"></h:message>
+                                            </div>
+
+                                             <div class="form-group">
+                                                <label for="cc-correo" class="control-label mb-1">Dirección de correo electrónico</label>
+                                                <input id="cc-correo" disabled="true" name="cc-docu" type="text" class="form-control" aria-required="true" aria-invalid="false" value="#{usuarioSession.usuLogin.correo}"/>
+                                            </div>
+                                            
+                                            <div class="form-group has-success">
+                                                <label for="regClave" class="control-label mb-1">Clave</label>
+                                                <h:inputSecret required="true" requiredMessage="Ingrese una clave" id="regClave" value="#{usuarioSession.usuLogin.clave}" class="form-control" html5:placeholder="Clave"/>
+                                                <h:message style="color: red" for="regClave"></h:message>
+                                            </div>
+
+                                            <div>
+                                                <h:commandButton class="btn btn-lg btn-info btn-block" value="Actualizar" action="#{usuarioSession.actualizarMisDatos()}" ></h:commandButton>
+                                            </div>
+                                        </h:form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div> <!-- .card -->
+
+                    </div><!--/.col-->
+                </div>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>
+

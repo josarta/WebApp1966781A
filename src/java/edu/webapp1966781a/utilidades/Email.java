@@ -127,8 +127,8 @@ public class Email {
     }
 
     public static void sendBienvenido(String para, String Nombres, String nombUsu, String clave) {
-        final String user = "";//cambiará en consecuencia al servidor utilizado
-        final String pass = "";
+         final String user = "adsiwebjava@gmail.com";//cambiará en consecuencia al servidor utilizado
+        final String pass = "adsi2020";
 
 //1st paso) Obtener el objeto de sesión
         Properties props = new Properties();
@@ -154,15 +154,15 @@ public class Email {
             message.setSubject("Bienvenido Banco-Pedagogico");
 
             message.setContent(
-                    "<center><img src='http://fs5.directupload.net/images/160530/khs5cmdc.jpg' title='Banco Pedagogico'></center>"
+                    "<center><img src='https://i.pinimg.com/originals/21/b5/10/21b510a268fc4f7e46607bf482995ae9.png' title='Bienvenidos'></center>"
                     + "<h3> Bienvenido. "
                     + Nombres
                     + "</h3>"
                     + "Datos de Ingreso: "
-                    + "<h4> Nombre Usuario : "
+                    + "<h4> Correo Usuario : "
                     + nombUsu
                     + "</h4>"
-                    + "<h4> Documento Usuario : "
+                    + "<h4> Clave Usuario : "
                     + clave
                     + " </h4>", "text/html");
 
