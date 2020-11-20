@@ -86,6 +86,9 @@
                                     <div  class="col-md-2">
                                         <h:form>
                                             <h:commandButton action="#{administradorView.correoMasivo()}" class="btn btn-success mb-1" value="Saludar"/>
+                                            <br/>
+                                            <h:commandButton action="#{administradorView.descargaReporte('ReporteUsuarios')}" class="btn btn-secondary mb-1" value="Descarga Reporte"></h:commandButton>
+
                                         </h:form>
 
                                     </div>
@@ -97,7 +100,8 @@
                                         <button type="button" style="display: none" id="btnModal" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#actualizarModal">
                                             actualiza Usuario
                                         </button>
-
+                                        
+                                     
                                     </div>
 
 

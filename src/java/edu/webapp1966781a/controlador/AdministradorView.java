@@ -8,13 +8,24 @@ package edu.webapp1966781a.controlador;
 import edu.webapp1966781a.entity.Usuario;
 import edu.webapp1966781a.facade.UsuarioFacadeLocal;
 import edu.webapp1966781a.utilidades.Email;
+import java.io.File;
 import java.io.Serializable;
+import static java.lang.System.out;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.JasperRunManager;
 import org.primefaces.PrimeFaces;
 
 /**
@@ -80,19 +91,47 @@ public class AdministradorView implements Serializable {
         }
         PrimeFaces.current().executeScript(mensajeSw);
     }
-    
-    public void correoMasivo(){
+
+    public void correoMasivo() {
         try {
             for (Usuario lUsuario : listaUsuarios) {
-                Email.sendBienvenido(lUsuario.getCorreo(), 
-                        lUsuario.getNombres() + " " +lUsuario.getApellidos(),
+                Email.sendBienvenido(lUsuario.getCorreo(),
+                        lUsuario.getNombres() + " " + lUsuario.getApellidos(),
                         lUsuario.getCorreo(), lUsuario.getClave());
             }
         } catch (Exception e) {
         }
-        
+
     }
-    
+
+    public void descargaReporte(String nombreReporte) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext context = facesContext.getExternalContext();
+        HttpServletRequest request = (HttpServletRequest) context.getRequest();
+
+        HttpServletResponse response = (HttpServletResponse) context.getResponse();
+        response.setContentType("application/pdf");
+
+        try {
+            Map parametro = new HashMap();
+            parametro.put("NumeroFicha", "1966781-A");
+            parametro.put("NombreCreador", "Josarta");
+            parametro.put("RutaImagen", "xxxxxxxx");
+
+            Connection conec = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/dashio", "root", "root");
+            System.out.println("Catalogo : " + conec.getCatalog());
+
+            byte[] bytes = JasperRunManager.runReportToPdf(new File(request.getRealPath("src/java/edu/webapp1966781a/reportes/"+nombreReporte+".jasper ")).getPath(), parametro, conec);
+
+            response.setContentLength(bytes.length);
+            out.write(bytes, 0, bytes.length);
+            out.flush();
+
+        } catch (Exception e) {
+            System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + e.getMessage());
+        }
+
+    }
 
     public AdministradorView() {
     }
