@@ -9,10 +9,12 @@ import edu.webapp1966781a.entity.Usuario;
 import edu.webapp1966781a.facade.UsuarioFacadeLocal;
 import edu.webapp1966781a.utilidades.Email;
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
-import static java.lang.System.out;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +27,10 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.primefaces.PrimeFaces;
 
 /**
@@ -104,7 +109,7 @@ public class AdministradorView implements Serializable {
 
     }
 
-    public void descargaReporte(String nombreReporte) {
+    public void descargaReporte(String nombreReporte)  {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext context = facesContext.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) context.getRequest();
@@ -116,19 +121,28 @@ public class AdministradorView implements Serializable {
             Map parametro = new HashMap();
             parametro.put("NumeroFicha", "1966781-A");
             parametro.put("NombreCreador", "Josarta");
-            parametro.put("RutaImagen", "xxxxxxxx");
-
+            parametro.put("RutaImagen", context.getRealPath("/images/sena.png"));
             Connection conec = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/dashio", "root", "root");
             System.out.println("Catalogo : " + conec.getCatalog());
-
-            byte[] bytes = JasperRunManager.runReportToPdf(new File(request.getRealPath("src/java/edu/webapp1966781a/reportes/"+nombreReporte+".jasper ")).getPath(), parametro, conec);
-
-            response.setContentLength(bytes.length);
-            out.write(bytes, 0, bytes.length);
-            out.flush();
-
-        } catch (Exception e) {
+            
+            File jasper = new File(context.getRealPath("/WEB-INF/classes/edu/webapp1966781a/reportes/"+nombreReporte+".jasper"));
+             
+            JasperPrint jp = JasperFillManager.fillReport(jasper.getPath(), parametro, conec);
+            
+            HttpServletResponse hsr = (HttpServletResponse) context.getResponse();
+            hsr.addHeader("Content-disposition", "attachment; filename=Lista Usuarios.pdf");
+            OutputStream os = hsr.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(jp, os);
+            os.flush();
+            os.close();
+            facesContext.responseComplete();
+           
+        } catch (JRException e) {
             System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + e.getMessage());
+        } catch(IOException i){
+            System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + i.getMessage());
+        } catch (SQLException q){
+            System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + q.getMessage());
         }
 
     }
