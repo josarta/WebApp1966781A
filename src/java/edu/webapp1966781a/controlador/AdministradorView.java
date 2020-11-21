@@ -25,6 +25,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
@@ -45,7 +46,11 @@ public class AdministradorView implements Serializable {
     UsuarioFacadeLocal usuarioFacadeLocal;
     private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
     private Usuario usReg = new Usuario();
-
+    
+    @Inject
+    UsuarioSession usuarioSession;
+    
+    
     /**
      * Creates a new instance of AdministradorView
      */
@@ -108,6 +113,45 @@ public class AdministradorView implements Serializable {
         }
 
     }
+    
+    
+     public void descargaCertificado(String idUsuario)  {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext context = facesContext.getExternalContext();
+        HttpServletRequest request = (HttpServletRequest) context.getRequest();
+
+        HttpServletResponse response = (HttpServletResponse) context.getResponse();
+        response.setContentType("application/pdf");
+
+        try {
+            Map parametro = new HashMap(); 
+            parametro.put("idUsuario", idUsuario);
+            parametro.put("RutaImagen", context.getRealPath("/images/senaFondo.jpg"));
+            Connection conec = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/dashio", "root", "root");
+            System.out.println("Catalogo : " + conec.getCatalog());
+            
+            File jasper = new File(context.getRealPath("/WEB-INF/classes/edu/webapp1966781a/reportes/certificado.jasper"));
+             
+            JasperPrint jp = JasperFillManager.fillReport(jasper.getPath(), parametro, conec);
+            
+            HttpServletResponse hsr = (HttpServletResponse) context.getResponse();
+            hsr.addHeader("Content-disposition", "attachment; filename=Certificado.pdf");
+            OutputStream os = hsr.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(jp, os);
+            os.flush();
+            os.close();
+            facesContext.responseComplete();
+           
+        } catch (JRException e) {
+            System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + e.getMessage());
+        } catch(IOException i){
+            System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + i.getMessage());
+        } catch (SQLException q){
+            System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + q.getMessage());
+        }
+
+    }
+     
 
     public void descargaReporte(String nombreReporte)  {
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -119,8 +163,8 @@ public class AdministradorView implements Serializable {
 
         try {
             Map parametro = new HashMap();
-            parametro.put("NumeroFicha", "1966781-A");
-            parametro.put("NombreCreador", "Josarta");
+            parametro.put("Ficha", "1966781-A");
+            parametro.put("UsuarioReporte", usuarioSession.getUsuLogin().getNombres() + " " + usuarioSession.getUsuLogin().getApellidos());
             parametro.put("RutaImagen", context.getRealPath("/images/sena.png"));
             Connection conec = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/dashio", "root", "root");
             System.out.println("Catalogo : " + conec.getCatalog());

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="af05e0da-2fc3-4c5c-b490-04a5af068a5d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="336"/>
+	<parameter name="idUsuario" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RutaImagen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     usuario.`nombres` AS usuario_nombres,
+     usuario.`apellidos` AS usuario_apellidos,
+     usuario.`tipoDocumento` AS usuario_tipoDocumento,
+     usuario.`documento` AS usuario_documento,
+     usuario.`correo` AS usuario_correo,
+     usuario.`fechaRegistro` AS usuario_fechaRegistro
+FROM
+     `usuario` usuario
+WHERE
+      usuario.`id` = $P{idUsuario}]]>
+	</queryString>
+	<field name="usuario_nombres" class="java.lang.String"/>
+	<field name="usuario_apellidos" class="java.lang.String"/>
+	<field name="usuario_tipoDocumento" class="java.lang.String"/>
+	<field name="usuario_documento" class="java.lang.Long"/>
+	<field name="usuario_correo" class="java.lang.String"/>
+	<field name="usuario_fechaRegistro" class="java.sql.Timestamp"/>
+	<background>
+		<band height="555" splitType="Stretch">
+			<image>
+				<reportElement x="56" y="57" width="696" height="401" uuid="a36924ba-f209-4b85-b10d-ec9691ddb3a3"/>
+				<imageExpression><![CDATA[$P{RutaImagen}]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="183" y="0" width="491" height="61" uuid="813e6225-561d-49b9-8c87-b71cd5bb5ed9"/>
+				<textElement>
+					<font size="36" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Certificacion Reportes]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<staticText>
+				<reportElement x="34" y="13" width="733" height="103" uuid="fc75b27c-85e4-45cf-91c5-9d5a4de065ea"/>
+				<textElement textAlignment="Justified">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Que el alumno                                                                 con                                                                      ha
+realizado Prácticas en Alternancia en esta empresa, por un total de (8 Horas) horas, desarrollando las funciones que se detallan, habiéndose alcalnzado los objetivos programados de forma enteramente satisfactoria. ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="135" y="13" width="100" height="20" uuid="fcaade04-7878-4c2b-ad2c-170ae7d83c15"/>
+				<textFieldExpression><![CDATA[$F{usuario_nombres}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="247" y="13" width="117" height="20" uuid="9389fd70-3015-4ec8-8be5-b7a3559ebee3"/>
+				<textFieldExpression><![CDATA[$F{usuario_apellidos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="14" width="141" height="20" uuid="ccb990be-2d5a-4059-93fe-32d1f1f644ce"/>
+				<textFieldExpression><![CDATA[$F{usuario_tipoDocumento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="561" y="14" width="113" height="20" uuid="306c22ed-4dcd-47da-aac3-416ae6193e8a"/>
+				<textFieldExpression><![CDATA[$F{usuario_documento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="46" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

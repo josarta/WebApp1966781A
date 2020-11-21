@@ -45,6 +45,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
     @Override
     public Usuario loginUsuario( String correo , String clave){
         try {
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createQuery("SELECT u FROM Usuario u WHERE u.correo = :correo AND u.clave = :clave");
             q.setParameter("correo", correo);
             q.setParameter("clave", clave);

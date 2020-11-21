@@ -66,6 +66,7 @@
                                                                 <h:commandButton  action="#{administradorView.cargaUsuarioEditar(usu)}" style="margin-right: 10px" class="btn btn-outline-primary" onclick="$('#btnModal').click();" value="Editar">
                                                                     <f:ajax render=":formModal"></f:ajax>
                                                                 </h:commandButton>
+                                                                <h:commandButton action="#{administradorView.descargaCertificado(usu.id)}" class="btn btn-outline-success" value="Certificado"/>
                                                                 <h:commandButton action="#{administradorView.removerUsuario(usu)}" class="btn btn-outline-danger" value="Remover"/>
                                                             </c:if>
                                                         </td>
@@ -87,7 +88,7 @@
                                         <h:form>
                                             <h:commandButton action="#{administradorView.correoMasivo()}" class="btn btn-success mb-1" value="Saludar"/>
                                             <br/>
-                                            <h:commandButton action="#{administradorView.descargaReporte('test')}" class="btn btn-secondary mb-1" value="Descarga Reporte"></h:commandButton>
+                                            <h:commandButton action="#{administradorView.descargaReporte('ListaUsuarios')}" class="btn btn-secondary mb-1" value="Descarga Reporte"></h:commandButton>
 
                                         </h:form>
 
